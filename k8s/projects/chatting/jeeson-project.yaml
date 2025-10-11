@@ -1,24 +1,22 @@
-# apps-gitops/projects/commerce/argo-project.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: jeeson-chat
-  namespace: jeeson-chat
+  name: commerce
+  namespace: argocd
 spec:
   description: "Commerce services"
   sourceRepos:
-    - 'https://github.com/JeongJin984/jeeson-menifest.git'     # 환경 저장소
+    - 'https://github.com/JeongJin984/jeeson-server'
+  # 2) 배포 대상(클러스터/네임스페이스) 허용
   destinations:
-    - namespace: 'commerce-*'
-      server: 'https://kubernetes.default.svc'
+    - server: 'https://kubernetes.default.svc'  # in-cluster
+      namespace: 'icarus-*'                     # 예: icarus-dev, icarus-prod
+    # 멀티클러스터 쓴다면 여기에 해당 클러스터 server/name 조합 추가
+
+  # 3) (선택) 리소스 화이트리스트
   clusterResourceWhitelist:
     - group: '*'
       kind: '*'
   namespaceResourceWhitelist:
     - group: '*'
       kind: '*'
-  roles:
-    - name: readers
-      description: Read-only
-      policies:
-        - p, proj:commerce:readers, applications, get, commerce/*, allow
