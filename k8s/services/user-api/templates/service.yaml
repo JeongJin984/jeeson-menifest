@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ default "icarus" .Values.service.name }}   # <<< 서비스 리소스 이름 고정/오버라이드
+  labels:
+    app.kubernetes.io/name: {{ include "user-api.name" . }}
+spec:
+  type: {{ .Values.service.type }}
+  selector:
+    app.kubernetes.io/name: {{ include "user-api.name" . }}
+  ports:
+    - name: http
+      port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
