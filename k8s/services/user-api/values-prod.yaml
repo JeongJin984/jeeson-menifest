@@ -1,0 +1,16 @@
+replicaCount: 3
+
+image:
+  tag: "1.1.0"   # CI나 Image Updater가 갱신
+
+ingress:
+  enabled: true
+  hosts:
+    - host: jeeson.iptime.org
+      paths:
+        - path: /user
+          pathType: Prefix
+
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: prod

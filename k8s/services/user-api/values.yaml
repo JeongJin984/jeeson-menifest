@@ -1,0 +1,63 @@
+replicaCount: 2
+
+image:
+  repository: your.registry.local/order-api
+  tag: "1.12.3"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []  # 예: [{ name: regcred }]
+
+serviceAccount:
+  create: true
+  name: ""            # 비우면 release명 기반 자동 생성
+
+podAnnotations: {}
+podLabels:
+  app.kubernetes.io/part-of: icarus
+  app.kubernetes.io/component: order-api
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: "500m"
+    memory: 512Mi
+
+livenessProbe:
+  path: /actuator/health/liveness
+  port: http
+readinessProbe:
+  path: /actuator/health/readiness
+  port: http
+  initialDelaySeconds: 10
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 8080
+
+ingress:
+  enabled: false
+  className: nginx
+  hosts:
+    - host: order.example.com
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []  # 예: [{ secretName: order-tls, hosts: [order.example.com] }]
+
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: prod
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+  # targetMemoryUtilizationPercentage: 75
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
