@@ -45,7 +45,7 @@ ingress:
   hosts:
     - host: jeeson.iptime.org
       paths:
-        - path: /user
+        - path: /api/v1/users
           pathType: Prefix
   tls: []  # 예: [{ secretName: jeeson-tls, hosts: [jeeson.iptime.org] }]
 
