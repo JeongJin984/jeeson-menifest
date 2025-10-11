@@ -1,20 +1,20 @@
 replicaCount: 2
 
 image:
-  repository: your.registry.local/order-api
-  tag: "1.12.3"
+  repository: your.registry.local/user-api
+  tag: "1.0.0"
   pullPolicy: IfNotPresent
 
 imagePullSecrets: []  # 예: [{ name: regcred }]
 
 serviceAccount:
   create: true
-  name: ""            # 비우면 release명 기반 자동 생성
+  name: ""  # 비우면 release명 기반 자동 생성
 
 podAnnotations: {}
 podLabels:
-  app.kubernetes.io/part-of: icarus
-  app.kubernetes.io/component: order-api
+  app.kubernetes.io/part-of: commerce
+  app.kubernetes.io/component: user-api
 
 resources:
   requests:
@@ -27,25 +27,27 @@ resources:
 livenessProbe:
   path: /actuator/health/liveness
   port: http
+
 readinessProbe:
   path: /actuator/health/readiness
   port: http
   initialDelaySeconds: 10
 
 service:
+  name: icarus           # <<< K8s Service 리소스 이름을 icarus로 고정
   type: ClusterIP
   port: 80
-  targetPort: 8080
+  targetPort: 9090
 
 ingress:
   enabled: false
   className: nginx
   hosts:
-    - host: order.example.com
+    - host: jeeson.iptime.org
       paths:
-        - path: /
+        - path: /user
           pathType: Prefix
-  tls: []  # 예: [{ secretName: order-tls, hosts: [order.example.com] }]
+  tls: []  # 예: [{ secretName: jeeson-tls, hosts: [jeeson.iptime.org] }]
 
 env:
   - name: SPRING_PROFILES_ACTIVE
@@ -56,7 +58,6 @@ autoscaling:
   minReplicas: 2
   maxReplicas: 6
   targetCPUUtilizationPercentage: 70
-  # targetMemoryUtilizationPercentage: 75
 
 nodeSelector: {}
 tolerations: []

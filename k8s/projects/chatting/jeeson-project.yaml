@@ -5,18 +5,23 @@ metadata:
   namespace: argocd
 spec:
   description: "Commerce services"
+  # Argo CD가 읽어올 수 있는 '소스 저장소' 화이트리스트
+  # (배포 매니페스트 저장소는 반드시 포함)
   sourceRepos:
-    - 'https://github.com/JeongJin984/jeeson-server'
-  # 2) 배포 대상(클러스터/네임스페이스) 허용
-  destinations:
-    - server: 'https://kubernetes.default.svc'  # in-cluster
-      namespace: 'icarus-*'                     # 예: icarus-dev, icarus-prod
-    # 멀티클러스터 쓴다면 여기에 해당 클러스터 server/name 조합 추가
+    - "https://github.com/JeongJin984/jeeson-menifest"
+    # 필요시 코드/차트 참조 대비해 함께 허용 (여러 source를 쓸 경우)
+    - "https://github.com/JeongJin984/jeeson-server.git"
+    # 외부 Helm 리포를 쓰면 여기에 추가 (예: https://charts.bitnami.com/bitnami)
 
-  # 3) (선택) 리소스 화이트리스트
+  # 배포 허용 대상 (클러스터/네임스페이스)
+  destinations:
+    - server: "https://kubernetes.default.svc"  # in-cluster
+      namespace: "icarus-*"
+
+  # (운영 정책에 맞춰 좁혀도 됩니다)
   clusterResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - group: "*"
+      kind: "*"
   namespaceResourceWhitelist:
-    - group: '*'
-      kind: '*'
+    - group: "*"
+      kind: "*"
