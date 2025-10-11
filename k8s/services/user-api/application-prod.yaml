@@ -6,7 +6,7 @@ metadata:
 spec:
   project: commerce
   source:
-    repoURL: https://github.com/your-org/apps-gitops
+    repoURL: https://github.com/JeongJin984/jeeson-menifest.git
     targetRevision: main
     path: services/user-api
     helm:
