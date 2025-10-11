@@ -9,7 +9,7 @@ imagePullSecrets: []  # 예: [{ name: regcred }]
 
 serviceAccount:
   create: true
-  name: ""  # 비우면 release명 기반 자동 생성
+  name: "user-api-sa"  # 비우면 release명 기반 자동 생성
 
 podAnnotations: {}
 podLabels:

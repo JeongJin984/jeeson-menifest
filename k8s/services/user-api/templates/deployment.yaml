@@ -22,7 +22,7 @@ spec:
       {{- end }}
     spec:
       {{- if .Values.serviceAccount.create }}
-      serviceAccountName: {{ default (include "user-api.fullname" .) .Values.serviceAccount.name }}
+      serviceAccountName: {{ .Values.serviceAccount.name }}  # ← 동일 이름 사용
       {{- end }}
       containers:
         - name: app
