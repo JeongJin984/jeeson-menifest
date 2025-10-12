@@ -1,7 +1,7 @@
 replicaCount: 3
 
 image:
-  tag: "0.0.1"   # CI나 Image Updater가 갱신
+  tag: "0.0.2"   # CI나 Image Updater가 갱신
 
 ingress:
   enabled: true
