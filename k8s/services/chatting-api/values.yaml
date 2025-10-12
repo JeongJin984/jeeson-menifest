@@ -1,0 +1,64 @@
+replicaCount: 2
+
+image:
+  repository: jeongjin984/chatting-api
+  tag: "0.0.1"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []  # 예: [{ name: regcred }]
+
+serviceAccount:
+  create: true
+  name: "chatting-api-sa"  # 비우면 release명 기반 자동 생성
+
+podAnnotations: {}
+podLabels:
+  app.kubernetes.io/part-of: commerce
+  app.kubernetes.io/component: chatting-api
+
+resources:
+  requests:
+    cpu: 200m
+    memory: 256Mi
+  limits:
+    cpu: "500m"
+    memory: 512Mi
+
+livenessProbe:
+  path: /actuator/health/liveness
+  port: http
+
+readinessProbe:
+  path: /actuator/health/readiness
+  port: http
+  initialDelaySeconds: 10
+
+service:
+  name: icarus           # <<< K8s Service 리소스 이름을 icarus로 고정
+  type: ClusterIP
+  port: 80
+  targetPort: 9090
+
+ingress:
+  enabled: false
+  className: nginx
+  hosts:
+    - host: jeeson.iptime.org
+      paths:
+        - path: /api/v1/chattings
+          pathType: Prefix
+  tls: []  # 예: [{ secretName: jeeson-tls, hosts: [jeeson.iptime.org] }]
+
+env:
+  - name: SPRING_PROFILES_ACTIVE
+    value: prod
+
+autoscaling:
+  enabled: true
+  minReplicas: 2
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 70
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

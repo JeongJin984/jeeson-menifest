@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: chatting-api-prod
+  namespace: argocd
+spec:
+  project: commerce
+  source:
+    repoURL: "https://github.com/JeongJin984/jeeson-menifest"
+    targetRevision: main         # ← 기본 브랜치에 맞게 main/master 선택
+    path: k8s/services/chatting-api      # ← jeeson-menifest 내부 경로(Helm 차트/매니페스트 위치)
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-prod.yaml
+  destination:
+    server: "https://kubernetes.default.svc"
+    namespace: "icarus-prod"
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 2m
