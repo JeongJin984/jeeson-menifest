@@ -8,7 +8,7 @@ ingress:
   hosts:
     - host: jeeson.iptime.org
       paths:
-        - path: /api/v1/chattings
+        - path: /api/v1/chats
           pathType: Prefix
 
 env:
