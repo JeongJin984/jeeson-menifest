@@ -34,7 +34,7 @@ readinessProbe:
   initialDelaySeconds: 10
 
 service:
-  name: icarus           # <<< K8s Service 리소스 이름을 icarus로 고정
+  name: chatting-api           # <<< K8s Service 리소스 이름을 icarus로 고정
   type: ClusterIP
   port: 80
   targetPort: 9090
