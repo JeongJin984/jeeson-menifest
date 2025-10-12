@@ -37,7 +37,7 @@ service:
   name: user-api           # <<< K8s Service 리소스 이름을 icarus로 고정
   type: ClusterIP
   port: 80
-  targetPort: 9090
+  targetPort: 8080
 
 ingress:
   enabled: false
